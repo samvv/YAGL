@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/samvv/YAGL/issues"
   },
-  "homepage": "https://github.com/samvv/YAGL#readme"
+  "homepage": "https://github.com/samvv/YAGL#readme",
+  "devDependencies": {
+    "ava": "^3.15.0"
+  }
 }
