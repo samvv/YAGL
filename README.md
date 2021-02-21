@@ -14,7 +14,7 @@ out this library and report any bugs in the [issue tracker][1].
 
 ### Features
 
- - **Fully typed graph algorithms** with support for adding your own
+ - **Fully typed graph algorithms** including a toplogical sort and a scheduler
  - **Algorithms in this library can be paused** to only provide part of the
    result
  - **Generic graph interface** allowing you to define your own graph on which the
@@ -24,32 +24,39 @@ out this library and report any bugs in the [issue tracker][1].
 
 ## Examples
 
-### Sorting a dependency graph
+### Sorting a list of dependencies
 
 The following is an example of a simple graph with vertices numbered from 1 to 4.
 
 <img src="https://raw.githubusercontent.com/samvv/YAGL/master/example-graph-1.png" />
 
 ```ts
-import Graph from "yagl/graph/directed"
+import { NumberGraph } from "yagl"
 
-const g = new Graph([[1, 2], [3, 2], [4, 1], [4, 3]]);
+const g = new NumberGraph([[1, 2], [3, 2], [4, 1], [4, 3]]);
 ```
 
 If we want to know which node goes before the next, we can use this library
-to perform a _toplogical sort_, like so:
+to perform a _toplogical sort_. Note that in the image below all the arrows are
+now from right to left.
+
+<img src="https://raw.githubusercontent.com/samvv/YAGL/master/example-graph-1-sorted.png" />
+
+This library can lazily calculate the first element that is guaranteed to have
+no outgoing edges. This can be done like so:
 
 ```ts
-import "yagl/toposort" // make available .toposort()
+import { toposort } "yagl"
 
-const ordered = g.toposort();
+const ordered = toposort(g);
 
 console.log(ordered.next().value); // outputs 2
 
 // the rest of the items will not get calculated
 ```
 
-If you want to force calculating all elements upfront you can make use of the spread operator:
+If you want to force calculating all elements upfront you can make use of the
+spread operator:
 
 ```ts
 console.log([...toposort(g)]) // [2, 1, 3, 4];
@@ -68,16 +75,17 @@ interface Person { /* ... */ }
 
 class MyGraphFromDB implements AsyncGraph<Person> {
 
-  getOutgoingEdges(person) {
+  getOutgoing(person) {
     return db.findFriendsOfPerson(person.id);
   }
 
   // ...
+
 }
 
 async function printConnected(person) {
   const g = new MyGraphFromDB();
-  for await (const scc of g.getSCCs()) {
+  for await (const scc of strongconnect()) {
     console.log(`${scc.length} persons are connected to one another.`);
   }
 }
@@ -85,21 +93,14 @@ async function printConnected(person) {
 
 ## Graph Types
 
-| Path        | Edge check | Add edge | Remove edge | Incoming | Outgoing |
-|-------------|------------|----------|-------------|----------|----------|
-| Hash        | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
+There are many different graph types possible, each with their own advantages
+and disadvantages. YAGL comes bundled with a few implementations that are most
+regularly used. Use the graph type that gives you the best perfomance for
+your specific application.
 
-To import a graph implementation, first specify if it should be directed and
-then if it should be labeled. Finally, use the name of the implementation
-converted in lowercase and underscores, like so:
-
-```ts
-import DirectedHashGraph from "yagl/graph/directed/hash"
-```
-
-| Name  | Undirected | Directed | Labeled | Directed and labeled |
-|-------|------------|----------|---------|----------------------|
-| Hash  | ✅         | ✅       |         | ✅                   | 
+| Name        | Edge type | Labeled | Edge check | Add edge | Remove edge | Incoming | Outgoing |
+|-------------|-----------|---------|------------|----------|-------------|----------|----------|
+| StringGraph | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
 
 ## Algorithms
 
@@ -108,70 +109,41 @@ The algorithms are written using ES6 generators, which means that they
 if you e.g. only need the first strongly connected component in a graph, or
 only want to calculate the next task if the previous task has finished.
 
-### graph.preorder(startNode?)
+### preorder(graph, startNode?)
 
 ```ts
-import "yagl/algorithm/preorder"
+import { preorder } "yagl"
 ```
 
 Performs a depth-first graph traversal starting at the given node.
 The nodes are traversed in _pre-order_, meaning that first the node itself is
 returned, and then its children are visited. Returns an
-[Iterable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol) 
+[Iterable][2]
 that generates the next node that has been visited.
 
-### graph.postorder(startNode?)
+### sccs(graph)
 
 ```ts
-import "yagl/algorithm/postorder"
-```
-
-Performs a depth-first graph traversal starting at the given node.
-The nodes are traversed in _post-order_, meaning that first the children are
-visited, and then the node itself is returned. Returns an [Iterable][2] that
-generates the next node that has been visited.
-
-### graph.breadthFirst(startNode?)
-
-```ts
-import "yagl/algorithm/breadthFirst"
-```
-
-Performs a breadth-first graph traversal starting at the given node. 
-Returns an [Iterable][2] that generates the next node that has been visited.  
-
-### graph.getRootNodes()
-
-```ts
-import "yagl/algorithm/getRootNodes"
-```
-
-Finds all nodes in the graph that do not have an ancestor. Takes `O(|V|)` time.
-Returns an [Iterable][2] that generates the next root in unspecified order.
-
-### graph.getSCCs()
-
-```ts
-import "yagl/algorithm/getSCCs"
+import { sccs } from "yagl"
 ```
 
 Finds all _strongly connected components_ in a graph by going through all
 nodes and edges. Takes `O(|E| + |V|)` time. Returns an [Iterable][2] that
 generates lists of nodes that are strongly connected to one another.
 
-### graph.hasCycle()
+### hasCycle(graph)
 
 ```ts
-import "yagl/algorithm/hasCycle"
+import { hasCycle } from "yagl"
 ```
 
 Quickly detect whether a given graph has cycles. In the worst case, this method
 takes `O(|E| + |V|)` time, but it might return faster if there is a cycle.
 
-### graph.toposort()
+### toposort(graph)
 
 ```ts
-import "yagl/algorithm/toposort"
+import { toposort } from "yagl"
 ```
 
 Performs a _topological sort_ on the graph. Also takes `O(|E| +
@@ -182,23 +154,5 @@ an [Iterable][2] that generates the next dependency in reverse order.
 
 ## License
 
-Copyright 2019 Sam Vervaeck
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+This software is licensed under the MIT license.
 
