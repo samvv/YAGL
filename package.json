@@ -4,6 +4,8 @@
   "description": "Yet another graph library for storing and manipulating mathematical graphs",
   "main": "lib/index.js",
   "scripts": {
+    "prepare": "babel src --out-dir lib -x .ts",
+    "watch": "ava --watch",
     "test": "ava"
   },
   "repository": {
@@ -28,6 +30,25 @@
   },
   "homepage": "https://github.com/samvv/YAGL#readme",
   "devDependencies": {
+    "@ava/babel": "^1.0.1",
+    "@babel/cli": "^7.12.17",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/preset-env": "^7.12.17",
+    "@babel/preset-typescript": "^7.12.17",
+    "@babel/register": "^7.12.13",
     "ava": "^3.15.0"
+  },
+  "ava": {
+    "require": [
+      "./babel-register"
+    ],
+    "files": [
+      "src/*.test.ts"
+    ],
+    "babel": {
+      "extensions": [
+        "ts"
+      ]
+    }
   }
 }
