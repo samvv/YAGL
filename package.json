@@ -1,0 +1,30 @@
+{
+  "name": "yagl",
+  "version": "0.2.0",
+  "description": "Yet another graph library for storing and manipulating mathematical graphs",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samvv/YAGL.git"
+  },
+  "keywords": [
+    "graph",
+    "sorting",
+    "data",
+    "data-structure",
+    "algorithm",
+    "strongly-connected-components",
+    "topological-sort",
+    "analysis",
+    "library"
+  ],
+  "author": "Sam Vervaeck",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samvv/YAGL/issues"
+  },
+  "homepage": "https://github.com/samvv/YAGL#readme"
+}
