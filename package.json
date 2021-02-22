@@ -1,6 +1,6 @@
 {
   "name": "yagl",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Yet another library for storing and manipulating mathematical graphs",
   "main": "lib/index.js",
   "sideEffects": false,

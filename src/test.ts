@@ -1,6 +1,5 @@
 
 import test from "ava";
-import {schedule} from "./algorithms/schedule";
 
 import {
   NumberGraph,
@@ -58,24 +57,3 @@ test("hasCycle() correctly reports cycles", t => {
 
 });
 
-test("schedule() groups tasks toget  her with the same priority", t => {
-
-  const g = new NumberGraph<number>([
-    [2, 1],
-    [3, 2],
-    [5, 2],
-    [6, 4],
-  ]);
-
-  g.addVertex(8);
-
-  const scheduled = [...schedule(g)];
-  t.assert(scheduled[0][0] === 1);
-  t.assert(scheduled[0][1] === 4);
-  t.assert(scheduled[0][2] === 8);
-  t.assert(scheduled[1][0] === 2);
-  t.assert(scheduled[1][1] === 6);
-  t.assert(scheduled[2][0] === 3);
-  t.assert(scheduled[2][1] === 5);
-
-});

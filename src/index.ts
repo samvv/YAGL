@@ -1,4 +1,5 @@
-import {tarjan} from "./algorithms/tarjan";
+
+import { tarjan } from "./algorithms/tarjan";
 import { Graph } from "./graph";
 
 export * from "./graph";
@@ -6,7 +7,6 @@ export * from "./graph";
 export * from "./algorithms/preorder";
 export * from "./algorithms/hasCycle";
 export * from "./algorithms/tarjan";
-export * from "./algorithms/schedule";
 
 // Default algorithm to use when finding strongly connected components
 export {
