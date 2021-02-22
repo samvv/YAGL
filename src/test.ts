@@ -3,7 +3,7 @@ import test from "ava";
 
 import {
   NumberGraph,
-  sccs,
+  strongconnect,
   toposort,
   hasCycle
 } from "./index";
@@ -28,7 +28,7 @@ test("tarjan's algorithm works on a graph with one small cycle", t => {
     [1, 2], [3, 2], [4, 1], [4, 3], [5, 4], [4, 5]
   ]);
 
-  const sorted = [...sccs(g)];
+  const sorted = [...strongconnect(g)];
 
   for (const scc of sorted) {
     scc.sort();
