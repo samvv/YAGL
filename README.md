@@ -157,6 +157,18 @@ Performs a _topological sort_ on an asynchronous graph. Also takes `O(|E| +
 |V|)` time. Throws an error if the graph contains one or more cycles. Returns
 an [AsyncIterable][3] that generates the next dependency in reverse order.
 
+### schedule(graph)
+
+Create a schedule of nodes where nodes that do not depend on each other are in
+the same group. This is very useful for executing tasks in parallel and when
+some tasks may depend on the completion of other tasks.
+
+### scheduleAsync(graph)
+
+Asynchronously create a schedule of nodes where nodes that do not depend on
+each other are in the same group. This is very useful for executing tasks in
+parallel and when some tasks may depend on the completion of other tasks.
+
 [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
 [3]: https://github.com/tc39/proposal-async-iteration
 
