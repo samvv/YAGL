@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "Yet another graph library for storing and manipulating mathematical graphs",
   "main": "lib/index.js",
+  "sideEffects": false,
   "scripts": {
     "prepare": "babel src --out-dir lib -x .ts",
     "watch": "ava --watch",
