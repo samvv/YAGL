@@ -52,7 +52,7 @@ const ordered = toposort(g);
 
 console.log(ordered.next().value); // outputs 2
 
-// the rest of the items will not get calculated
+// the rest of the items will not be calculated
 ```
 
 If you want to force calculating all elements upfront you can make use of the
@@ -69,9 +69,7 @@ library to count how many people in a database are connected to one another
 either directly or indirectly:
 
 ```ts
-import { AsyncGraph } from "yagl/async"
-
-interface Person { /* ... */ }
+import { AsyncGraph, sccs } from "yagl"
 
 class MyGraphFromDB implements AsyncGraph<Person> {
 
@@ -83,9 +81,9 @@ class MyGraphFromDB implements AsyncGraph<Person> {
 
 }
 
-async function printConnected(person) {
+async function printConnectedPeople(person) {
   const g = new MyGraphFromDB();
-  for await (const scc of strongconnect()) {
+  for await (const scc of sccs(g)) {
     console.log(`${scc.length} persons are connected to one another.`);
   }
 }
@@ -109,48 +107,58 @@ The algorithms are written using ES6 generators, which means that they
 if you e.g. only need the first strongly connected component in a graph, or
 only want to calculate the next task if the previous task has finished.
 
-### preorder(graph, startNode?)
+### preorder(graph)
 
-```ts
-import { preorder } "yagl"
-```
+Performs a depth-first graph traversal starting at the given node. The nodes
+are traversed in _pre-order_, meaning that first the node itself is returned,
+and then its children are visited. Returns an [Iterable][2] that generates the
+next node that has been visited.
 
-Performs a depth-first graph traversal starting at the given node.
+### preorderAsync(graph)
+
+Performs a depth-first asynchronous graph traversal starting at the given node.
 The nodes are traversed in _pre-order_, meaning that first the node itself is
-returned, and then its children are visited. Returns an
-[Iterable][2]
-that generates the next node that has been visited.
+returned, and then its children are visited. Returns an [AsyncIterable][3] that
+generates the next node that has been visited.
 
-### sccs(graph)
+### strongconnect(graph)
 
-```ts
-import { sccs } from "yagl"
-```
+Finds all _strongly connected components_ in a graph by going through all nodes
+and edges. Takes `O(|E| + |V|)` time. Returns an [Iterable][2] that generates
+lists of nodes that are strongly connected to one another.
 
-Finds all _strongly connected components_ in a graph by going through all
-nodes and edges. Takes `O(|E| + |V|)` time. Returns an [Iterable][2] that
-generates lists of nodes that are strongly connected to one another.
+### strongconnectAsync(graph)
+
+Finds all _strongly connected components_ in an asynchronous graph by going
+through all nodes and edges. Takes `O(|E| + |V|)` time. Returns an
+[AsyncIterable][3] that generates lists of nodes that are strongly connected to
+one another.
 
 ### hasCycle(graph)
-
-```ts
-import { hasCycle } from "yagl"
-```
 
 Quickly detect whether a given graph has cycles. In the worst case, this method
 takes `O(|E| + |V|)` time, but it might return faster if there is a cycle.
 
+### hasCycleAsync(graph)
+
+Quickly detect whether a given asynchronous graph has cycles. In the worst
+case, this method takes `O(|E| + |V|)` time, but it might return faster if
+there is a cycle.
+
 ### toposort(graph)
 
-```ts
-import { toposort } from "yagl"
-```
+Performs a _topological sort_ on the graph. Also takes `O(|E| + |V|)` time.
+Throws an error if the graph contains one or more cycles. Returns an
+[Iterable][2] that generates the next dependency in reverse order.
 
-Performs a _topological sort_ on the graph. Also takes `O(|E| +
+### toposortAsync(graph)
+
+Performs a _topological sort_ on an asynchronous graph. Also takes `O(|E| +
 |V|)` time. Throws an error if the graph contains one or more cycles. Returns
-an [Iterable][2] that generates the next dependency in reverse order.
+an [AsyncIterable][3] that generates the next dependency in reverse order.
 
 [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#The_iterable_protocol
+[3]: https://github.com/tc39/proposal-async-iteration
 
 ## License
 

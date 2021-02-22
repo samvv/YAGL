@@ -9,8 +9,8 @@ export * from "./algorithms/tarjan"
 
 // Default algorithm to use when finding strongly connected components
 export {
-  tarjan as sccs,
-  tarjanAsync as sccsAsync
+  tarjan as strongconnect,
+  tarjanAsync as strongconnectAsync
 } from "./algorithms/tarjan";
 
 export function *toposort<V>(graph: Graph<V>) {
