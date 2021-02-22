@@ -1,5 +1,6 @@
 
 export interface Graph<V = string> {
+  addVertex(v: V): void;
   addEdge(a: V, b: V): void;
   deleteEdge(a: V, b: V): void;
   hasEdge(a: V, b: V): boolean;
@@ -124,6 +125,10 @@ export class NullObjectGraph<V extends PropertyKey> implements Graph<V> {
 
   public getVertices() {
     return this.nodes;
+  }
+
+  public addVertex(v: V): void {
+    this.nodes.add(v);
   }
 
   public *getEdges(): Iterable<[V, V]> {
