@@ -2,6 +2,7 @@
 export interface Graph<V = string> {
   addEdge(a: V, b: V): void;
   deleteEdge(a: V, b: V): void;
+  hasEdge(a: V, b: V): boolean;
   getIncoming(node: V): Iterable<V>;
   getOutgoing(node: V): Iterable<V>;
   getVertices(): Iterable<V>;
@@ -20,6 +21,7 @@ export interface LabeledGraph<V = string, L = string> {
 }
 
 export interface AsyncGraph<V = string> {
+  hasEdge(a: V, b: V): Promise<boolean>;
   getIncoming(node: V): AsyncIterable<V>;
   getOutgoing(node: V): AsyncIterable<V>;
   getVertices(): AsyncIterable<V>;
@@ -61,6 +63,12 @@ export class NullObjectGraph<V extends PropertyKey> implements Graph<V> {
         this.addEdge(v, w);
       }
     }
+  }
+
+  public hasEdge(a: V, b: V) {
+    const targetNodes = this.targetNodes[a];
+    return targetNodes !== undefined
+        && targetNodes.has(b);
   }
 
   public addEdge(source: V, target: V): void {
