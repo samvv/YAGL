@@ -1,8 +1,9 @@
 
+import { Graph } from "./types";
 import { tarjan } from "./algorithms/tarjan";
-import { Graph } from "./graph";
 
-export * from "./graph";
+export * from "./types";
+export * from "./HashGraph"
 
 export * from "./algorithms/preorder";
 export * from "./algorithms/hasCycle";

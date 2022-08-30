@@ -1,5 +1,5 @@
 
-import { AsyncGraph, Graph } from "../graph";
+import { AsyncGraph, Graph } from "../types";
 
 export function *preorder<V>(graph: Graph<V>): Generator<V> {
   const visited = new Set<V>();

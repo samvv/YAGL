@@ -99,6 +99,7 @@ your specific application.
 | Name        | Edge type | Labeled | Edge check | Add edge | Remove edge | Incoming | Outgoing |
 |-------------|-----------|---------|------------|----------|-------------|----------|----------|
 | StringGraph | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
+| NumberGraph | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
 
 ## Algorithms
 

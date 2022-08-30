@@ -1,5 +1,5 @@
 
-import { Graph, AsyncGraph } from "../graph"
+import { Graph, AsyncGraph } from "../types"
 
 interface TarjanVertexData {
   index?: number;

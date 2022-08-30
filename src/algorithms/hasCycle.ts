@@ -1,5 +1,5 @@
 
-import { Graph, AsyncGraph } from "../graph";
+import { Graph, AsyncGraph } from "../types";
 
 export function hasCycle<V>(graph: Graph<V>): boolean {
   const visited = new Set<V>();
