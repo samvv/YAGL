@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "sideEffects": false,
   "scripts": {
-    "prepare": "tsc && babel src --out-dir lib -x .ts",
+    "prepare": "tsc --noEmit && babel src --out-dir lib -x .ts",
     "watch": "ava --watch",
     "test": "ava"
   },
