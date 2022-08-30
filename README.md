@@ -93,13 +93,12 @@ async function printConnectedPeople(person) {
 
 There are many different graph types possible, each with their own advantages
 and disadvantages. YAGL comes bundled with a few implementations that are most
-regularly used. Use the graph type that gives you the best perfomance for
-your specific application.
+regularly used. Use the graph type that gives you the best perfomance for your
+specific application.
 
 | Name        | Edge type | Labeled | Edge check | Add edge | Remove edge | Incoming | Outgoing |
 |-------------|-----------|---------|------------|----------|-------------|----------|----------|
-| StringGraph | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
-| NumberGraph | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
+| HashGraph   | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
 
 ## Algorithms
 
