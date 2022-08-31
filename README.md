@@ -146,6 +146,10 @@ const g = new HashGraph([[2, 1], [3, 1]]);
 console.log([...g.getSourceVertices(1)])
 ```
 
+### Graph.deleteVertex(vertex)
+
+Delete the given vertex and all associated edges from the graph.
+
 ## Algorithms
 
 The algorithms are written using ES6 generators, which means that they

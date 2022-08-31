@@ -65,6 +65,7 @@ test('a DirectedHashGraph keeps track of vertices that are directly being added'
 test('a DirectedHashGraph removes all edges that are associated with a given node', t => {
   const g = new DirectedHashGraph([
     [1, 2],
+    [2, 2],
     [2, 3],
     [3, 4],
     [4, 1],
@@ -72,8 +73,11 @@ test('a DirectedHashGraph removes all edges that are associated with a given nod
   ]);
   g.deleteVertex(2);
   t.assert(!g.hasEdge(1, 2));
+  t.assert(!g.hasEdge(2, 2));
   t.assert(!g.hasEdge(2, 3));
   t.assert(!g.hasVertex(2));
+  t.assert(g.hasEdge(3, 4));
+  t.assert(g.hasEdge(4, 1));
 });
 
 test('a LabeledDirectedHashGraph can have edges added an reports them as being added', t => {

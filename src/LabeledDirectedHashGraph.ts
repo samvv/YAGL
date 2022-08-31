@@ -134,6 +134,18 @@ export class LabeledDirectedHashGraph<V, L> implements LabeledGraph<V, L> {
     this.nodes.delete(node);
   }
 
+  public *getSourceVertices(node: V): Iterable<V> {
+    for (const [source, _] of this.targetToSource.get(node)) {
+      yield source;
+    }
+  }
+
+  public *getTargetVertices(node: V): Iterable<V> {
+    for (const [target, _] of this.sourceToTarget.get(node)) {
+      yield target;
+    }
+  }
+  
   public getIncomingEdges(node: V): Iterable<[V, L]> {
     return this.targetToSource.get(node);
   }

@@ -59,7 +59,7 @@ export async function hasCycleAsync<V>(graph: AsyncGraph<V>): Promise<boolean> {
     }
     visited.add(v);
     backEdges.add(v);
-    for await (const w of graph.getOutgoing(v)) {
+    for await (const w of graph.getTargetVertices(v)) {
       stack.push(w);
     }
   }

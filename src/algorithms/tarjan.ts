@@ -89,7 +89,7 @@ export async function* tarjanAsync<V>(graph: AsyncGraph<V>): AsyncGenerator<V[]>
     stack.push(v);
     vData.onStack = true;
 
-    for await (const w of graph.getOutgoing(v)) {
+    for await (const w of graph.getTargetVertices(v)) {
       const wData = getData(w);
       if (wData.index === undefined) {
         yield* strongconnect(w);

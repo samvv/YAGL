@@ -48,14 +48,14 @@ class MultiMap<K, V> {
     }
   }
 
-  public delete(key: K, value?: V): void {
-    if (value === undefined) {
-      this.mapping.delete(key);
-      return;
-    }
+  public delete(key: K, value?: V): number {
     const elements = this.mapping.get(key);
     if (elements === undefined) {
-      return;
+      return 0;
+    }
+    if (value === undefined) {
+      this.mapping.delete(key);
+      return elements.length;
     }
     const i = elements.indexOf(value);
     if (i !== -1) {
@@ -63,7 +63,9 @@ class MultiMap<K, V> {
       if (elements.length === 0) {
         this.mapping.delete(key);
       }
+      return 1;
     }
+    return 0;
   }
 
 }
@@ -119,11 +121,22 @@ export class DirectedHashGraph<V> implements Graph<V> {
   }
 
   public deleteVertex(node: V): void {
-    for (const source of this.targetToSource.get(node)) {
-      this.sourceToTarget.delete(source, node);
+    let count = 0;
+    for (const source of this.sourceToTarget.get(node)) {
+      this.targetToSource.delete(source, node);
     }
-    this.targetToSource.delete(node);
-    this.sourceToTarget.delete(node);
+    count += this.sourceToTarget.delete(node);
+    for (const target of this.targetToSource.get(node)) {
+      this.sourceToTarget.delete(target, node);
+    }
+    count += this.targetToSource.delete(node);
+    //for (const source of this.targetToSource.get(node)) {
+    //  this.sourceToTarget.delete(source, node);
+    //}
+    //for (const target of this.sourceToTarget.get(node)) {
+    //  this.targetToSource.delete(target, node);
+    //}
+    this.edgeCount -= count;
     this.nodes.delete(node);
   }
 

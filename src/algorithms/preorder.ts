@@ -47,7 +47,7 @@ export async function *preorderAsync<V>(graph: AsyncGraph<V>): AsyncGenerator<V>
     }
     yield v;
     visited.add(v);
-    for await (const w of graph.getOutgoing(v)) {
+    for await (const w of graph.getTargetVertices(v)) {
       stack.push(w);
     }
   }
