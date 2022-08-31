@@ -76,7 +76,7 @@ class MultiMap<K, V> {
  * is preserved for vertices. For example, if you add node A after B,
  * `getVertices()` will always retun `['B', 'A']`.
  */
-export class HashGraph<V extends PropertyKey> implements Graph<V> {
+export class DirectedHashGraph<V> implements Graph<V> {
 
   private nodes = new Set<V>();
   private sourceToTarget = new MultiMap<V, V>();
@@ -127,11 +127,11 @@ export class HashGraph<V extends PropertyKey> implements Graph<V> {
     this.nodes.delete(node);
   }
 
-  public getIncoming(node: V): Iterable<V> {
+  public getSourceVertices(node: V): Iterable<V> {
     return this.targetToSource.get(node);
   }
 
-  public getOutgoing(node: V): Iterable<V> {
+  public getTargetVertices(node: V): Iterable<V> {
     return this.sourceToTarget.get(node);
   }
 

@@ -29,7 +29,7 @@ export function* tarjan<V>(graph: Graph<V>): Generator<V[]> {
     stack.push(v);
     vData.onStack = true;
 
-    for (const w of graph.getOutgoing(v)) {
+    for (const w of graph.getTargetVertices(v)) {
       const wData = getData(w);
       if (wData.index === undefined) {
         yield* strongconnect(w);

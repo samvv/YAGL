@@ -30,10 +30,10 @@ The following is an example of a simple graph with vertices numbered from 1 to 4
 
 <img src="https://raw.githubusercontent.com/samvv/YAGL/master/example-graph-1.png" />
 
-```ts
-import { NumberGraph } from "yagl"
+```typescript
+import { HashGraph } from "yagl"
 
-const g = new NumberGraph([[1, 2], [3, 2], [4, 1], [4, 3]]);
+const g = new HashGraph([[1, 2], [3, 2], [4, 1], [4, 3]]);
 ```
 
 If we want to know which node goes before the next, we can use this library
@@ -45,7 +45,7 @@ now from right to left.
 This library can lazily calculate the first element that is guaranteed to have
 no outgoing edges. This can be done like so:
 
-```ts
+```typescript
 import { toposort } "yagl"
 
 const ordered = toposort(g);
@@ -58,7 +58,7 @@ console.log(ordered.next().value); // outputs 2
 If you want to force calculating all elements upfront you can make use of the
 spread operator:
 
-```ts
+```typescript
 console.log([...toposort(g)]) // [2, 1, 3, 4];
 ```
 
@@ -68,12 +68,12 @@ The following example demonstrates how to use the asynchronous version of the
 library to count how many people in a database are connected to one another
 either directly or indirectly:
 
-```ts
+```typescript
 import { AsyncGraph, sccs } from "yagl"
 
 class MyGraphFromDB implements AsyncGraph<Person> {
 
-  getOutgoing(person) {
+  public getTargetVertices(person): Iterable<Person> {
     return db.findFriendsOfPerson(person.id);
   }
 
@@ -81,9 +81,9 @@ class MyGraphFromDB implements AsyncGraph<Person> {
 
 }
 
-async function printConnectedPeople(person) {
-  const g = new MyGraphFromDB();
-  for await (const scc of sccs(g)) {
+async function printConnectedPeople(person): void {
+  const people = new MyGraphFromDB();
+  for await (const scc of sccs(people)) {
     console.log(`${scc.length} persons are connected to one another.`);
   }
 }
@@ -96,9 +96,55 @@ and disadvantages. YAGL comes bundled with a few implementations that are most
 regularly used. Use the graph type that gives you the best perfomance for your
 specific application.
 
-| Name        | Edge type | Labeled | Edge check | Add edge | Remove edge | Incoming | Outgoing |
-|-------------|-----------|---------|------------|----------|-------------|----------|----------|
-| HashGraph   | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
+| Name                     | Edge type | Labeled | Edge check | Add edge | Remove edge | Incoming | Outgoing |
+|--------------------------|-----------|---------|------------|----------|-------------|----------|----------|
+| DirectedHashGraph        | Directed  | No      | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
+| LabeledDirectedHashGraph | Directed  | Yes     | O(1)       | O(1)     | O(1)        | O(1)     | O(1)     |
+
+## Graph API
+
+### Graph.vertexCount
+
+A read-only property that indicates the total amount of vertices that are
+stored within this graph.
+
+### Graph.edgeCount
+
+A read-only property that indicates the total amount of edges that are stored
+within this graph.
+
+### Graph.addEdge(from, to)
+
+Adds a new edge from vertex `from` to vertex `to` to the graph. When the vertex
+is not present, it will be automatically added to the list of vertices in the
+graph.
+
+### Graph.addVertex(vertex)
+
+Adds a new vertex to the graph. Note that this is not strictly necessary, as
+new vertices are automatically added when calling `addEdge`.
+
+### Graph.getTargetVertices(vertex)
+
+Get all the vertices that flow outward from the given vertex.
+
+```typescript
+const g = new HashGraph([[2, 1], [3, 1]]);
+
+// this will print '[1]'
+console.log([...g.getTargetVertices(3)])
+```
+
+### Graph.getSourceVertices(vertex)
+
+Get all the vertices that lead to the provided vertex, if any.
+
+```typescript
+const g = new HashGraph([[2, 1], [3, 1]]);
+
+// this will print '[1, 3]'
+console.log([...g.getSourceVertices(1)])
+```
 
 ## Algorithms
 

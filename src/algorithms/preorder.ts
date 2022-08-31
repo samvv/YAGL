@@ -21,7 +21,7 @@ export function *preorder<V>(graph: Graph<V>): Generator<V> {
     }
     yield v;
     visited.add(v);
-    for (const w of graph.getOutgoing(v)) {
+    for (const w of graph.getTargetVertices(v)) {
       stack.push(w);
     }
   }

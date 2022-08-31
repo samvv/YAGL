@@ -3,7 +3,9 @@ import { Graph } from "./types";
 import { tarjan } from "./algorithms/tarjan";
 
 export * from "./types";
-export * from "./HashGraph"
+
+export * from "./DirectedHashGraph"
+export * from "./LabeledDirectedHashGraph"
 
 export * from "./algorithms/preorder";
 export * from "./algorithms/hasCycle";

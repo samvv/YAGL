@@ -4,8 +4,8 @@ export interface Graph<V = string> {
   addEdge(a: V, b: V): void;
   deleteEdge(a: V, b: V): void;
   hasEdge(a: V, b: V): boolean;
-  getIncoming(node: V): Iterable<V>;
-  getOutgoing(node: V): Iterable<V>;
+  getSourceVertices(node: V): Iterable<V>;
+  getTargetVertices(node: V): Iterable<V>;
   getVertices(): Iterable<V>;
   getEdges(): Iterable<[V, V]>;
   readonly edgeCount: number;
@@ -13,8 +13,8 @@ export interface Graph<V = string> {
 }
 
 export interface LabeledGraph<V = string, L = string> {
-  getIncoming(node: V): Iterable<[L, V]>;
-  getOutgoing(node: V): Iterable<[L, V]>;
+  getIncomingEdges(node: V): Iterable<[L, V]>;
+  getOutgoingEdges(node: V): Iterable<[L, V]>;
   getVertices(): Iterable<V>;
   getEdges(): Iterable<[V, V, L]>;
   readonly edgeCount: number;
@@ -23,8 +23,8 @@ export interface LabeledGraph<V = string, L = string> {
 
 export interface AsyncGraph<V = string> {
   hasEdge(a: V, b: V): Promise<boolean>;
-  getIncoming(node: V): AsyncIterable<V>;
-  getOutgoing(node: V): AsyncIterable<V>;
+  getSourceVertices(node: V): AsyncIterable<V>;
+  getTargetVertices(node: V): AsyncIterable<V>;
   getVertices(): AsyncIterable<V>;
   getEdges(): AsyncIterable<[V, V]>;
   readonly edgeCount: Promise<number>;
@@ -32,8 +32,8 @@ export interface AsyncGraph<V = string> {
 }
 
 export interface AsyncLabeledGraph<V = string, L = string> {
-  getIncoming(node: V): AsyncIterable<Array<[L, V]>>;
-  getOutgoing(node: V): AsyncIterable<Array<[L, V]>>;
+  getIncomingEdges(node: V): AsyncIterable<Array<[L, V]>>;
+  getOutgoingEdges(node: V): AsyncIterable<Array<[L, V]>>;
   getVertices(): AsyncIterable<V>;
   getEdges(): AsyncIterable<[V, V, L]>;
   readonly edgeCount: Promise<number>;

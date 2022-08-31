@@ -26,7 +26,7 @@ export function hasCycle<V>(graph: Graph<V>): boolean {
     }
     visited.add(v);
     backEdges.add(v);
-    for (const w of graph.getOutgoing(v)) {
+    for (const w of graph.getTargetVertices(v)) {
       stack.push(w);
     }
   }
