@@ -31,9 +31,9 @@ The following is an example of a simple graph with vertices numbered from 1 to 4
 <img src="https://raw.githubusercontent.com/samvv/YAGL/master/example-graph-1.png" />
 
 ```typescript
-import { HashGraph } from "yagl"
+import { DirectedHashGraph } from "yagl"
 
-const g = new HashGraph([[1, 2], [3, 2], [4, 1], [4, 3]]);
+const g = new DirectedHashGraph([[1, 2], [3, 2], [4, 1], [4, 3]]);
 ```
 
 If we want to know which node goes before the next, we can use this library
@@ -46,7 +46,7 @@ This library can lazily calculate the first element that is guaranteed to have
 no outgoing edges. This can be done like so:
 
 ```typescript
-import { toposort } "yagl"
+import { toposort } from "yagl"
 
 const ordered = toposort(g);
 
@@ -129,7 +129,7 @@ new vertices are automatically added when calling `addEdge`.
 Get all the vertices that flow outward from the given vertex.
 
 ```typescript
-const g = new HashGraph([[2, 1], [3, 1]]);
+const g = new DirectedHashGraph([[2, 1], [3, 1]]);
 
 // this will print '[1]'
 console.log([...g.getTargetVertices(3)])
@@ -140,7 +140,7 @@ console.log([...g.getTargetVertices(3)])
 Get all the vertices that lead to the provided vertex, if any.
 
 ```typescript
-const g = new HashGraph([[2, 1], [3, 1]]);
+const g = new DirectedHashGraph([[2, 1], [3, 1]]);
 
 // this will print '[1, 3]'
 console.log([...g.getSourceVertices(1)])
