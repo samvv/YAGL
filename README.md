@@ -69,7 +69,7 @@ library to count how many people in a database are connected to one another
 either directly or indirectly:
 
 ```typescript
-import { AsyncGraph, sccs } from "yagl"
+import { AsyncGraph, strongconnectAsync } from "yagl"
 
 class MyGraphFromDB implements AsyncGraph<Person> {
 
@@ -83,7 +83,7 @@ class MyGraphFromDB implements AsyncGraph<Person> {
 
 async function printConnectedPeople(person): void {
   const people = new MyGraphFromDB();
-  for await (const scc of sccs(people)) {
+  for await (const scc of strongconnectAsync(people)) {
     console.log(`${scc.length} persons are connected to one another.`);
   }
 }
