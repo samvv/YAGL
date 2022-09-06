@@ -1,7 +1,7 @@
 
-import { Graph, AsyncGraph } from "../types";
+import { GraphLike, AsyncGraphLike } from "../types";
 
-export function hasCycle<V>(graph: Graph<V>): boolean {
+export function hasCycle<V>(graph: GraphLike<V>): boolean {
   const visited = new Set<V>();
   const backEdges = new Set<V>();
   const stack = [];
@@ -34,7 +34,7 @@ export function hasCycle<V>(graph: Graph<V>): boolean {
 }
 
 
-export async function hasCycleAsync<V>(graph: AsyncGraph<V>): Promise<boolean> {
+export async function hasCycleAsync<V>(graph: AsyncGraphLike<V>): Promise<boolean> {
   const visited = new Set<V>();
   const backEdges = new Set<V>();
   const stack = [];

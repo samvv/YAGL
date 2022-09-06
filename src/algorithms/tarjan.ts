@@ -1,5 +1,5 @@
 
-import { Graph, AsyncGraph } from "../types"
+import { GraphLike, AsyncGraphLike } from "../types"
 
 interface TarjanVertexData {
   index?: number;
@@ -7,7 +7,7 @@ interface TarjanVertexData {
   onStack?: boolean;
 }
 
-export function* tarjan<V>(graph: Graph<V>): Generator<V[]> {
+export function* tarjan<V>(graph: GraphLike<V>): Generator<V[]> {
 
   const vertexData = new Map<V, TarjanVertexData>();
 
@@ -67,7 +67,7 @@ export function* tarjan<V>(graph: Graph<V>): Generator<V[]> {
 
 }
 
-export async function* tarjanAsync<V>(graph: AsyncGraph<V>): AsyncGenerator<V[]> {
+export async function* tarjanAsync<V>(graph: AsyncGraphLike<V>): AsyncGenerator<V[]> {
 
   const vertexData = new Map<V, TarjanVertexData>();
 

@@ -1,7 +1,7 @@
 
-import { AsyncGraph, Graph } from "../types";
+import { AsyncGraphLike, GraphLike } from "../types";
 
-export function *preorder<V>(graph: Graph<V>): Generator<V> {
+export function *preorder<V>(graph: GraphLike<V>): Generator<V> {
   const visited = new Set<V>();
   const stack = [];
   const toVisit = graph.getVertices()[Symbol.iterator]();
@@ -27,7 +27,7 @@ export function *preorder<V>(graph: Graph<V>): Generator<V> {
   }
 }
 
-export async function *preorderAsync<V>(graph: AsyncGraph<V>): AsyncGenerator<V> {
+export async function *preorderAsync<V>(graph: AsyncGraphLike<V>): AsyncGenerator<V> {
   const visited = new Set<V>();
   const stack = [];
   const toVisit = graph.getVertices()[Symbol.asyncIterator]();
